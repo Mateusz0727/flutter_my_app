@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_my_app/screens/auth/login.dart';
-import 'package:flutter_my_app/storage/SecureStorage.dart';
+import 'package:flutter_my_app/screens/layout.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage(),
+      home: Layout(),
     );
   }
 }

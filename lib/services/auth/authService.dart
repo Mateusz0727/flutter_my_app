@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_my_app/models/user.dart';
-import 'package:flutter_my_app/screens/loyalty/loyalty.dart';
+import 'package:flutter_my_app/screens/loyalty/loyaltyCard.dart';
 import 'package:flutter_my_app/services/apiConnection.dart';
 import 'package:flutter_my_app/storage/SecureStorage.dart';
 import 'package:http/http.dart' as http;
@@ -14,14 +14,14 @@ class AuthService {
   void login(BuildContext context, String email, password) async {
     try {
       final user = UserLoginModel(email, password);
-      final url = Uri.parse(ApiConstants.baseUrl + "/login");
+      final url = Uri.parse(ApiConstants.baseApiUrl + "/login");
       var response = await http.post(url,
           headers: headers, body: jsonEncode(user.toJson()));
 
       if (response.statusCode == 200) {
         database.write("jwt", response.body.toString());
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => QRScreen()));
+            context, MaterialPageRoute(builder: (context) => LoyaltyCard()));
         print(await database.read("jwt"));
       }
       if (response.statusCode == 401) {
@@ -42,7 +42,7 @@ class AuthService {
     try {
       final userRegister =
           UserRegisterModel(email, password, givenName, surName);
-      final url = Uri.parse(ApiConstants.baseUrl + "/register");
+      final url = Uri.parse(ApiConstants.baseApiUrl + "/register");
       await http.post(url,
           headers: headers, body: jsonEncode(userRegister.toJson()));
     } catch (e) {
