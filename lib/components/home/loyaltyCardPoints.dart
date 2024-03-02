@@ -15,7 +15,7 @@ class LoyaltyCardPoints extends StatelessWidget {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            int count = snapshot.data!;
+            int count = snapshot.data! % 10;
             List<Widget> points = [];
 
             for (int i = 0; i < count; i++) {
