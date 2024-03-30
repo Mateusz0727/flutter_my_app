@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class JwtToken {
   final String token;
   final String userName;

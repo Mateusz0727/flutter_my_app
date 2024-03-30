@@ -1,6 +1,8 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_my_app/models/UserQrCode.dart';
 import 'package:flutter_my_app/security/jwtToken.dart';
 import 'package:flutter_my_app/services/apiConnection.dart';
@@ -15,7 +17,7 @@ class QRCodeSimulator {
     if (jwt != null) {
       JwtToken jwtToken = JwtToken.fromJson(json.decode(jwt));
       String token = jwtToken.token;
-      final url = Uri.parse(ApiConstants.baseApiUrl + '/api/UserPoints');
+      final url = Uri.parse('${ApiConstants.baseApiUrl}/api/UserPoints');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -26,13 +28,19 @@ class QRCodeSimulator {
       );
 
       if (response.statusCode == 200) {
-        print('QR code data sent successfully!');
+        if (kDebugMode) {
+          print('QR code data sent successfully!');
+        }
         // Możesz przetwarzać odpowiedź serwera tutaj
       } else if (response.statusCode == 400) {
-        print(response.body);
+        if (kDebugMode) {
+          print(response.body);
+        }
       } else {
-        print(
-            'Failed to send QR code data. Error code: ${response.statusCode}');
+        if (kDebugMode) {
+          print(
+              'Failed to send QR code data. Error code: ${response.statusCode}');
+        }
       }
     }
   }

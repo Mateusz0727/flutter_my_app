@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter_my_app/screens/auth/register.dart';
 import 'package:flutter_my_app/services/auth/authService.dart';
@@ -27,8 +29,8 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         child: TextFormField(
                           controller: emailController,
                           validator: (value) {
@@ -42,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           child: TextFormField(
                             controller: passwordController,
@@ -86,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                RegisterPage()));
+                                                const RegisterPage()));
                                   },
                                   child: const Text('Utwóz konto'),
                                 )))

@@ -1,5 +1,8 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_my_app/models/UserQrCode.dart';
 import 'package:flutter_my_app/security/jwtToken.dart';
 import 'package:flutter_my_app/services/apiConnection.dart';
@@ -8,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class QrCodesService {
   final database = SecureDatabase();
-  Future<UserQrCode?> fetchUserQrCode() async {
+  Future<String> fetchUserQrCode() async {
     String? jwt = await database.read("jwt");
     if (jwt != null) {
       JwtToken jwtToken = JwtToken.fromJson(json.decode(jwt));
@@ -18,19 +21,21 @@ class QrCodesService {
         'Authorization': 'Bearer  $token',
       };
       var response = await http.get(
-          Uri.parse(ApiConstants.baseApiUrl + "/api/qrCode"),
+          Uri.parse("${ApiConstants.baseApiUrl}/api/qrCode"),
           headers: headers);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = jsonDecode(response.body);
         jsonData['Token'] = jwtToken.token;
         UserQrCode data = UserQrCode.fromJson(jsonData);
-        return data;
+        return response.body;
       } else {
-        print('Failed to fetch QR data');
-        return null;
+        if (kDebugMode) {
+          print('Failed to fetch QR data');
+        }
+        return "";
       }
     }
-    return null;
+    return "";
   }
 
   Future<String> fetchUserPrizeQrCode() async {
@@ -43,12 +48,15 @@ class QrCodesService {
         'Authorization': 'Bearer  $token',
       };
       var response = await http.get(
-          Uri.parse(ApiConstants.baseApiUrl + "/api/qrCode"),
+          Uri.parse(
+              "${ApiConstants.baseApiUrl}/api/qrCode/generateQrCodeForPrize"),
           headers: headers);
       if (response.statusCode == 200) {
         return response.body;
       } else {
-        print('Failed to fetch QR data');
+        if (kDebugMode) {
+          print('Failed to fetch QR data');
+        }
         return "";
       }
     }

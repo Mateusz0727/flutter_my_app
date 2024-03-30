@@ -1,3 +1,6 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_my_app/screens/auth/login.dart';
 import 'package:flutter_my_app/services/auth/authService.dart';
@@ -31,8 +34,8 @@ class _RegisterPage extends State<RegisterPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                       child: TextFormField(
                         controller: givenNameController,
                         keyboardType: TextInputType.name,
@@ -47,8 +50,8 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                       child: TextFormField(
                         controller: surNameController,
                         keyboardType: TextInputType.name,
@@ -64,8 +67,8 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                       child: TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -80,8 +83,8 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                       child: TextFormField(
                         controller: passwordController,
                         obscureText: true,
@@ -108,7 +111,8 @@ class _RegisterPage extends State<RegisterPage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
+                                        builder: (context) =>
+                                            const LoginPage()));
                               },
                               child: const Text('Masz konto?'),
                             ))),
@@ -118,7 +122,9 @@ class _RegisterPage extends State<RegisterPage> {
                             child: Center(
                                 child: ElevatedButton(
                               onPressed: () {
-                                print(database.read("jwt"));
+                                if (kDebugMode) {
+                                  print(database.read("jwt"));
+                                }
                               },
                               child: const Text('Masz ?'),
                             ))),

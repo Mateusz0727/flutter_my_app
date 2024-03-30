@@ -1,16 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_my_app/components/home/loyaltyCardPoints.dart';
 import 'package:flutter_my_app/components/home/topbackground.dart';
+import 'package:flutter_my_app/models/userPoints.dart';
 import 'package:flutter_my_app/services/userPoints/userPointsServices.dart';
 
 class Home extends StatelessWidget {
   final Function(int) changePageIndex;
   final UserPointsService userPointsService = UserPointsService();
-  late final Future<int> countUserPoints;
+  late final Future<UserPointsModel> countUserPoints;
 
-  Home(this.changePageIndex) {
+  Home(this.changePageIndex, {super.key}) {
     countUserPoints = userPointsService.fetchData();
   }
   @override
@@ -22,8 +21,8 @@ class Home extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
-                TopBackground(),
-                Padding(
+                const TopBackground(),
+                const Padding(
                   padding: EdgeInsets.only(top: 70),
                   child: Text(
                     'Lorem Ipsum',
@@ -33,7 +32,7 @@ class Home extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(10),
                   child: Text(
                     'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry s standard dummy text ever since the 1500s',
@@ -43,17 +42,15 @@ class Home extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                FutureBuilder<int>(
+                FutureBuilder<UserPointsModel>(
                   future: countUserPoints,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else {
-                      if (snapshot.data != null &&
-                          snapshot.data! > 0 &&
-                          snapshot.data! % 10 != 0) {
+                      if (snapshot.data != null && snapshot.data!.points >= 0) {
                         return LoyaltyCardPoints(
-                            countUserpoint: countUserPoints);
+                            countUserpoint: snapshot.data!);
                       } else {
                         return ElevatedButton(
                           onPressed: () {
@@ -73,11 +70,11 @@ class Home extends StatelessWidget {
             left: 0,
             right: 0,
             child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 65,
               child: ClipOval(
                 child: Image.asset('images/logo.jpg'),
               ),
-              backgroundColor: Colors.white,
-              radius: 65,
             ),
           ),
         ],

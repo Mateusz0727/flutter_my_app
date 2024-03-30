@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_my_app/models/UserQrCode.dart';
 import 'package:flutter_my_app/services/QrCodesService/QrCodesService.dart';
@@ -5,21 +7,24 @@ import 'package:flutter_my_app/testSendingQrCode/testSendingQrCode.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class LoyaltyCard extends StatefulWidget {
+  const LoyaltyCard({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _LoyaltyCardState createState() => _LoyaltyCardState();
 }
 
 final qrCodeSimulator = QRCodeSimulator();
 
 class _LoyaltyCardState extends State<LoyaltyCard> {
-  UserQrCode qrData = new UserQrCode(DateTime.now(), '', '');
+  String qrData = "";
   final qrCodeService = QrCodesService();
 
   void setQrData() async {
-    UserQrCode? data = await qrCodeService.fetchUserQrCode();
+    String data = await qrCodeService.fetchUserQrCode();
 
     setState(() {
-      qrData = data!;
+      qrData = data;
     });
   }
 
@@ -33,21 +38,11 @@ class _LoyaltyCardState extends State<LoyaltyCard> {
     setQrData();
   }
 
-  void _sendQRCodeData() {
-    if (mounted) {
-      qrCodeSimulator.sendQRCodeDataToServer(qrData);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: _sendQRCodeData,
-        child: Icon(Icons.send),
-      ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color.fromARGB(255, 255, 248, 241),
         ),
         child: RefreshIndicator(
@@ -61,31 +56,31 @@ class _LoyaltyCardState extends State<LoyaltyCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: 100),
+                    padding: const EdgeInsets.only(top: 100),
                     child: Container(
-                      height: 220,
+                      height: 320,
                       width: double.infinity,
-                      margin: EdgeInsets.all(15),
+                      margin: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           image: AssetImage('images/coffeBackground.png'),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: qrData.id.isNotEmpty
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: qrData.isNotEmpty
                             ? Center(
                                 child: QrImageView(
                                   data: qrData.toString(),
                                   version: QrVersions.auto,
-                                  size: 160.0,
+                                  size: 250.0,
                                   backgroundColor: Colors
                                       .white, // Ustaw białe tło dla QRCode
                                 ),
                               )
-                            : Center(
+                            : const Center(
                                 child: CircularProgressIndicator(
                                   strokeWidth: 4,
                                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -95,7 +90,7 @@ class _LoyaltyCardState extends State<LoyaltyCard> {
                       ),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(top: 70),
                     child: Text(
                       'Lorem Ipsum',
@@ -105,7 +100,7 @@ class _LoyaltyCardState extends State<LoyaltyCard> {
                       ),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
                       textAlign: TextAlign.center,

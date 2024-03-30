@@ -1,5 +1,8 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_my_app/models/user.dart';
 import 'package:flutter_my_app/screens/loyalty/loyaltyCard.dart';
@@ -14,26 +17,32 @@ class AuthService {
   void login(BuildContext context, String email, password) async {
     try {
       final user = UserLoginModel(email, password);
-      final url = Uri.parse(ApiConstants.baseApiUrl + "/login");
+      final url = Uri.parse("${ApiConstants.baseApiUrl}/login");
       var response = await http.post(url,
           headers: headers, body: jsonEncode(user.toJson()));
 
       if (response.statusCode == 200) {
         database.write("jwt", response.body.toString());
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoyaltyCard()));
-        print(await database.read("jwt"));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoyaltyCard()));
+        if (kDebugMode) {
+          print(await database.read("jwt"));
+        }
       }
       if (response.statusCode == 401) {
-        print(response.toString());
-        final snackBar = SnackBar(
+        if (kDebugMode) {
+          print(response.toString());
+        }
+        const snackBar = SnackBar(
           content: Text('Nieprawidłowy login lub hasło.'),
-          duration: const Duration(seconds: 3),
+          duration: Duration(seconds: 3),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 
@@ -42,11 +51,13 @@ class AuthService {
     try {
       final userRegister =
           UserRegisterModel(email, password, givenName, surName);
-      final url = Uri.parse(ApiConstants.baseApiUrl + "/register");
+      final url = Uri.parse("${ApiConstants.baseApiUrl}/register");
       await http.post(url,
           headers: headers, body: jsonEncode(userRegister.toJson()));
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 }
